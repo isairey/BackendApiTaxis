@@ -1,12 +1,11 @@
 package com.taxiapp.backend.controller;
-
 import com.taxiapp.backend.entity.Usuario;
 import com.taxiapp.backend.repository.UsuarioRepository;
 import com.taxiapp.backend.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,6 +28,11 @@ public class AuthController {
 
         return usuarioRepository.save(usuario);
     }
+
+    @GetMapping("/usuarios")
+public List<Usuario> obtenerUsuarios() {
+    return usuarioRepository.findAll();
+}
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody Usuario request) {
