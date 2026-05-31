@@ -218,7 +218,7 @@ Gestión financiera del sistema.
 # 📂 Estructura del proyecto
 
 ```bash
-TaxiBackend/
+BackendApiTaxis/
 │
 ├── src/
 │   ├── main/
@@ -312,7 +312,7 @@ TaxiBackend/
 ## 1️⃣ Clonar repositorio
 
 ```bash
-git clone https://github.com/isairey/TaxiBackend.git
+git clone https://github.com/isairey/BackendApiTaxis.git
 ```
 
 ---
@@ -320,7 +320,7 @@ git clone https://github.com/isairey/TaxiBackend.git
 ## 2️⃣ Entrar al proyecto
 
 ```bash
-cd TaxiBackend
+cd BackendApiTaxis
 ```
 
 ---
