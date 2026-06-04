@@ -50,4 +50,81 @@ public class ViajeController {
 
         return viajeRepository.save(viaje);
     }
+
+    @GetMapping("/{id}")
+public Viaje obtenerPorId(@PathVariable Long id) {
+
+    return viajeRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Viaje no encontrado"));
+}
+
+@PutMapping("/{id}/iniciar")
+public Viaje iniciar(@PathVariable Long id) {
+
+    Viaje viaje = viajeRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Viaje no encontrado"));
+
+    viaje.setEstado(EstadoViaje.EN_CURSO);
+
+    return viajeRepository.save(viaje);
+}
+@PutMapping("/{id}/cancelar")
+public Viaje cancelar(@PathVariable Long id) {
+
+    Viaje viaje = viajeRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Viaje no encontrado"));
+
+    viaje.setEstado(EstadoViaje.CANCELADO);
+
+    return viajeRepository.save(viaje);
+}
+@DeleteMapping("/{id}")
+public String eliminar(@PathVariable Long id) {
+
+    viajeRepository.deleteById(id);
+
+    return "Viaje eliminado correctamente";
+}
+
+@GetMapping("/pendientes")
+public List<Viaje> pendientes() {
+
+    return viajeRepository.findByEstado(
+            EstadoViaje.PENDIENTE
+    );
+}
+
+@GetMapping("/aceptados")
+public List<Viaje> aceptados() {
+
+    return viajeRepository.findByEstado(
+            EstadoViaje.ACEPTADO
+    );
+}
+
+@GetMapping("/encurso")
+public List<Viaje> enCurso() {
+
+    return viajeRepository.findByEstado(
+            EstadoViaje.EN_CURSO
+    );
+}
+
+@GetMapping("/finalizados")
+public List<Viaje> finalizados() {
+
+    return viajeRepository.findByEstado(
+            EstadoViaje.FINALIZADO
+    );
+}
+
+@GetMapping("/cancelados")
+public List<Viaje> cancelados() {
+
+    return viajeRepository.findByEstado(
+            EstadoViaje.CANCELADO
+    );
+}
+
+
 }

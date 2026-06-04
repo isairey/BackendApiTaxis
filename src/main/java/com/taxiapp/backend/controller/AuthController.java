@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -58,4 +59,76 @@ public List<Usuario> obtenerUsuarios() {
                 "rol", usuario.getRol()
         );
     }
+
+    // Obtener usuario por ID
+@GetMapping("/usuarios/{id}")
+public Usuario obtenerUsuarioPorId(@PathVariable Long id) {
+
+    return usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+}
+
+// Actualizar usuario
+@PutMapping("/usuarios/{id}")
+public Usuario actualizarUsuario(
+        @PathVariable Long id,
+        @RequestBody Usuario datos) {
+
+    Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    usuario.setNombre(datos.getNombre());
+    usuario.setEmail(datos.getEmail());
+    usuario.setTelefono(datos.getTelefono());
+
+    if (datos.getPassword() != null &&
+            !datos.getPassword().isEmpty()) {
+
+        usuario.setPassword(
+                encoder.encode(datos.getPassword())
+        );
+    }
+
+    return usuarioRepository.save(usuario);
+}
+
+// Cambiar estado activo/inactivo
+@PatchMapping("/usuarios/{id}/estado")
+public Usuario cambiarEstado(
+        @PathVariable Long id,
+        @RequestParam Boolean activo) {
+
+    Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    usuario.setActivo(activo);
+
+    return usuarioRepository.save(usuario);
+}
+
+// Eliminar usuario
+@DeleteMapping("/usuarios/{id}")
+public Map<String, String> eliminarUsuario(
+        @PathVariable Long id) {
+
+    Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    usuarioRepository.delete(usuario);
+
+    return Map.of(
+            "mensaje",
+            "Usuario eliminado correctamente"
+    );
+}
+
+// Buscar usuario por email
+@GetMapping("/usuarios/email/{email}")
+public Usuario buscarPorEmail(
+        @PathVariable String email) {
+
+    return usuarioRepository.findByEmail(email)
+            .orElseThrow(() ->
+                    new RuntimeException("Usuario no encontrado"));
+}
 }
