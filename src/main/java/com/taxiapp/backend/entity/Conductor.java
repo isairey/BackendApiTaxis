@@ -18,6 +18,7 @@ public class Conductor {
 
     private String vehiculo;
 
+    @Column(unique = true)
     private String placas;
 
     private Double latitud;
@@ -27,8 +28,4 @@ public class Conductor {
     private Boolean disponible;
 
     private Double calificacion;
-
-    @OneToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
 }
